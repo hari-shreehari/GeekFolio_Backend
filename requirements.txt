@@ -1,1 +1,16 @@
 fastapi[all]
+pdfplumber
+pdf2image
+Pillow
+pytesseract
+PyPDF2
+typing-extensions
+python-docx
+odfpy
+textract==1.5.0
+google-generativeai
+fastapi
+uvicorn
+python-multipart
+python-dotenv
+requests
