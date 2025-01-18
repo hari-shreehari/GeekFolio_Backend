@@ -152,3 +152,6 @@ async def extract_text_from_resume(file: UploadFile = File(...)):
     except Exception as e:
         logger.error(f"Error processing file: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
+        
+if __name__ == "_main_":
+    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
