@@ -53,101 +53,123 @@ async def extract_text_from_resume(file: UploadFile = File(...)):
 
         Only output valid JSON. Do not include any extra commentary or text, just the JSON data. Leave any missing fields empty as shown in the format.
 
-        Format the content in the resume to this JSON: {{
-        "personal_information": [
-            {{
-            "name": [""],
-            "contact_information": [
-                {{
-                "phone_number": [""],
-                "email": [""],
-                "address": [""]
-                }}
+        Format the content in the resume to this JSON: 
+        {
+            "personal_information":
+            {
+                "name": [""],
+                "contact_information":
+                    {
+                        "phone_number": [""],
+                        "email": [""],
+                        "address": [""]
+                    },
+                "linkedin_profile": [""],
+                "github_profile": [""]
+            },
+
+            "objective_summary": 
+            [
+                {
+                    "career_objective": [""],
+                    "professional_summary": [""]
+                },
             ],
-            "linkedin_profile": [""],
-            "github_profile": [""],
-            "objective_summary": [
-                {{
-                "career_objective": [""],
-                "professional_summary": [""]
-                }}
+
+            "education":
+            [
+                {
+                    "degree": [""],
+                    "major_field_of_study": [""],
+                    "university_institution_name": [""],
+                    "graduation_date": [""],
+                    "cgpa_grades": [""]
+                },
+            ],
+
+            "experience": 
+            [
+                {
+                    "job_title": [""],
+                    "company_name": [""],
+                    "location": [""],
+                    "dates_of_employment": 
+                    {
+                        "start_date": [""],
+                        "end_date": [""]
+                    },
+                    "responsibilities_achievements": [""]
+                },
+            ],
+
+            "projects":
+            [
+                {
+                    "project_title": [""],
+                    "technologies_used": [""],
+                    "project_description": [""],
+                    "duration": 
+                    {
+                        "start_date": [""],
+                        "end_date": [""]
+                    },
+                    "project_links": [""]
+                },
+            ],
+
+            "certifications": 
+            [
+                {
+                    "certification_title": [""],
+                    "issuing_organization": [""],
+                    "date_obtained": [""]
+                }
+            ],
+
+            "skills": 
+            {
+                "technical_skills": [""],
+                "soft_skills": [""]
+            },
+
+            "achievements": 
+            [
+                {
+                    "awards_honors": [""],
+                    "scholarships": [""],
+                    "competitions": [""]
+                }
+            ],
+
+            "extracurricular_activities": 
+            [
+                {
+                "clubs_organizations": [""],
+                "volunteer_work": [""],
+                "leadership_roles": [""]
+                },
+            ],
+
+            "languages": 
+            [
+                {
+                "language_proficiency": [""],
+                "level_of_proficiency": [""]
+                },
             ]
-            }}
-        ],
-        "education": [
-            {{
-            "degree": [""],
-            "major_field_of_study": [""],
-            "university_institution_name": [""],
-            "graduation_date": [""],
-            "cgpa_grades": [""]
-            }}
-        ],
-        "experience": [
-            {{
-            "job_title": [""],
-            "company_name": [""],
-            "location": {{
-                "city": [""],
-                "state": [""]
-            }},
-            "dates_of_employment": {{
-                "start_date": [""],
-                "end_date": [""]
-            }},
-            "responsibilities_achievements": [""]
-            }}
-        ],
-        "projects": [
-            {{
-            "project_title": [""],
-            "technologies_used": [""],
-            "project_description": [""],
-            "duration": {{
-                "start_date": [""],
-                "end_date": [""]
-            }},
-            "project_links": [""]
-            }}
-        ],
-        "certifications": [
-            {{
-            "certification_title": [""],
-            "issuing_organization": [""],
-            "date_obtained": [""]
-            }}
-        ],
-        "skills": {{
-            "technical_skills": [""],
-            "soft_skills": [""]
-        }},
-        "achievements": {{
-            "awards_honors": [""],
-            "scholarships": [""],
-            "competitions": [""]
-        }},
-        "extracurricular_activities": {{
-            "clubs_organizations": [""],
-            "volunteer_work": [""],
-            "leadership_roles": [""]
-        }},
-        "languages": [
-            {{
-            "language_proficiency": [""],
-            "level_of_proficiency": [""]
-            }}
-        ]
-        }}
+        }
         '''
 
         # Generate content from the model
         result = model.generate_content([genai_file, "\n\n", prompt])
         response_text = result.text
-        
-        # response_json = json.loads(response_text)
+        print(response_text)
+        response_text=response_text.split("```json", 1)[1]
+        response_text=response_text.rsplit("```", 1)[0]
+        response_json = json.loads(response_text)
 
         # Return the parsed JSON directly
-        return JSONResponse(content={"structured_json": response_text})
+        return JSONResponse(response_json)
 
     except Exception as e:
         logger.error(f"Error processing file: {str(e)}")

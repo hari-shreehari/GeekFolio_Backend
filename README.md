@@ -42,7 +42,7 @@ conda activate vult
 
 To start the server in development mode, use the following command:
 ```bash
-uvicorn server:app --reload
+uvicorn main:app --reload
 ```
 
 This will start the server at http://127.0.0.1:8000.
