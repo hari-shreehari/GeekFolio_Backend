@@ -1,8 +1,16 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "main.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "functions": {
+          "main.py": {
+            "maxDuration": 60
+          }
+        }
+      }
     }
   ],
   "routes": [
@@ -13,11 +21,6 @@
   ],
   "env": {
     "APP_MODULE": "main:app"
-  },
-  "functions": {
-    "main.py": {
-      "maxDuration": 60
-    }
   }
 }
 
